@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "BSL-1.0",
   "packageManager": "pnpm@10.28.0",
   "devDependencies": {
     "typescript": "^5.9.3"
