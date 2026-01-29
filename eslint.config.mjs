@@ -18,7 +18,7 @@ export default tseslint.config(
         projectService: {
           allowDefaultProject: ["eslint.config.mjs"],
         },
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -34,6 +34,7 @@ export default tseslint.config(
       "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
       "@typescript-eslint/no-floating-promises": "error",
       "no-console": ["warn", { allow: ["warn", "error"] }],
+      "@typescript-eslint/no-non-null-assertion": "off",
     },
   },
 

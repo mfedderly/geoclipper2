@@ -9,7 +9,6 @@
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
     "target": "esnext",
-    "types": [],
 
     // Other Outputs
     "sourceMap": true,
@@ -35,6 +34,9 @@
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "skipLibCheck": false
+    "skipLibCheck": false,
+
+    "erasableSyntaxOnly": true,
+    "allowImportingTsExtensions": true
   }
 }
