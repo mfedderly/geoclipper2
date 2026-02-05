@@ -2,6 +2,8 @@ import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
 
+import { rule as noPoint64Equality } from "./eslint/no-point64-equality.mjs";
+
 // eslint-disable-next-line @typescript-eslint/no-deprecated
 export default tseslint.config(
   {
@@ -22,6 +24,13 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    plugins: {
+      "custom-rules": {
+        rules: {
+          "no-point64-equality": noPoint64Equality,
+        },
+      },
+    },
   },
 
   {
@@ -35,6 +44,7 @@ export default tseslint.config(
       "@typescript-eslint/no-floating-promises": "error",
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "@typescript-eslint/no-non-null-assertion": "off",
+      "custom-rules/no-point64-equality": "error",
     },
   },
 
