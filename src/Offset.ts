@@ -7,6 +7,7 @@
  * License   :  https://www.boost.org/LICENSE_1_0.txt                           *
  *******************************************************************************/
 
+import { Clipper64 } from "./Clipper64.ts";
 import { ClipType } from "./ClipType.ts";
 import { crossProductD } from "./crossProductD.ts";
 import { dotProductD } from "./dotProductD.ts";
@@ -144,7 +145,7 @@ export class ClipperOffset {
     c.preserveCollinear = this.preserveCollinear;
     c.reverseSolution = this.reverseSolution !== pathsReversed;
     c.addSubject(this.#solution);
-    c.execute(ClipType.Union, fillRule, this.#solution);
+    c.execute(ClipType.Union, fillRule, this.#solution, []);
   }
 
   execute(delta: number) {

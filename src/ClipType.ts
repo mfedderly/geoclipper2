@@ -1,3 +1,4 @@
+// Note: all clipping operations except for Difference are commutative.
 export const ClipType = {
   NoClip: 0,
   Intersection: 1,
