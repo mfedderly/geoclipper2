@@ -18,7 +18,10 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: ["eslint.config.mjs"],
+          allowDefaultProject: [
+            "eslint.config.mjs",
+            "eslint/no-point64-equality.mjs",
+          ],
         },
 
         tsconfigRootDir: import.meta.dirname,
@@ -49,6 +52,14 @@ export default tseslint.config(
         "error",
         { allowNumber: true },
       ],
+    },
+  },
+
+  {
+    files: ["tests/**/*.test.ts"],
+    rules: {
+      // node tests specifically hook into these floating promises
+      "@typescript-eslint/no-floating-promises": "off",
     },
   },
 

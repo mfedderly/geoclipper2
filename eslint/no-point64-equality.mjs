@@ -1,5 +1,4 @@
-import { ESLintUtils, AST_NODE_TYPES } from "@typescript-eslint/utils";
-import * as ts from "typescript";
+import { ESLintUtils } from "@typescript-eslint/utils";
 
 // 1. Create the rule creator
 const createRule = ESLintUtils.RuleCreator(
@@ -25,9 +24,10 @@ export const rule = createRule({
           const type = checker.getTypeAtLocation(tsNode);
 
           // Check the type name, alias, or symbol name
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           const typeName =
-            type.aliasSymbol?.name ||
-            type.getSymbol()?.name ||
+            type.aliasSymbol?.name ??
+            type.getSymbol()?.name ??
             type.intrinsicName;
 
           // You might also want to check if it matches your specific Point64 definition
