@@ -10,7 +10,7 @@
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "test": "node --test",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier -c .",
