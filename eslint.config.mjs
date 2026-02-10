@@ -45,6 +45,10 @@ export default tseslint.config(
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "@typescript-eslint/no-non-null-assertion": "off",
       "custom-rules/no-point64-equality": "error",
+      "@typescript-eslint/restrict-template-expressions": [
+        "error",
+        { allowNumber: true },
+      ],
     },
   },
 
