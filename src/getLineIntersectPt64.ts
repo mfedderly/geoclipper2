@@ -24,9 +24,11 @@ export function getLineIntersectPt64(
   // again this was originally doubles
   const t = ((ln1a[0] - ln2a[0]) * dy2 - (ln1a[1] - ln2a[1]) * dx2) / det;
   if (t <= 0.0) {
-    return { nonParallel: true, ip: ln1a };
+    // must copy ln1a (and ln1b below) because these are Point64's on existing structures
+    // the original C# code uses ip = ln1a to assign them, but its sneakily a struct and therefore a copy not a reference.
+    return { nonParallel: true, ip: Array.from(ln1a) as Point64 };
   } else if (t >= 1.0) {
-    return { nonParallel: true, ip: ln1b };
+    return { nonParallel: true, ip: Array.from(ln1b) as Point64 };
   } else {
     return {
       nonParallel: true,

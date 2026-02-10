@@ -26,6 +26,7 @@ export function addPathsToVertexList(
         // ie skips duplicates
         currV = new Vertex(pt, VertexFlags.None, prevV);
         vertexList.push(currV);
+        prevV!.next = currV;
         prevV = currV;
       }
     }

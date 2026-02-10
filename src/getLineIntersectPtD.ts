@@ -18,9 +18,11 @@ export function getLineIntersectPtD(
   let ip: PointD;
   const t = ((ln1a[0] - ln2a[0]) * dy2 - (ln1a[1] - ln2a[1]) * dx2) / det;
   if (t <= 0.0) {
-    ip = ln1a;
+    // ln1a (and ln1b below) must be cloned before returning, so we don't accidentally
+    // reuse an point stored on existing data.
+    ip = Array.from(ln1a) as PointD;
   } else if (t >= 1.0) {
-    ip = ln1b;
+    ip = Array.from(ln1b) as PointD;
   } else {
     // avoid using constructor (and rounding too) as they affect performance // 664
     ip = [ln1a[0] + t * dx1, ln1a[1] + t * dy1] as PointD;

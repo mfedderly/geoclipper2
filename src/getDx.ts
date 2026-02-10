@@ -9,5 +9,5 @@ export function getDx(pt1: Point64, pt2: Point64): number {
   if (dy !== 0) {
     return (pt2[0] - pt1[0]) / dy;
   }
-  return pt2[0] > pt1[0] ? Infinity : -Infinity;
+  return pt2[0] > pt1[0] ? -Infinity : Infinity;
 }

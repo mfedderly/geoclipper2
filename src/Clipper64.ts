@@ -82,7 +82,6 @@ export class Clipper64 {
   #scanlineList: number[] = [];
   #horzSegList: HorzSegment[] = [];
   #horzJoinList: HorzJoin[] = [];
-  #outPtPool: OutPt[] = [];
   #currentLocMin = 0;
   #currentBotY = 0; // TODO this is a long
   #isSortedMinimaList = true;
@@ -196,6 +195,7 @@ export class Clipper64 {
 
     const y = this.#scanlineList[cnt]!;
     this.#scanlineList.splice(cnt--, 1);
+    // remove duplicates while you return
     while (cnt >= 0 && y === this.#scanlineList[cnt]) {
       this.#scanlineList.splice(cnt--, 1);
     }
@@ -524,15 +524,21 @@ export class Clipper64 {
           default:
             return ae.windCount2 === 0;
         }
-      case ClipType.Difference:
+      case ClipType.Difference: {
+        let result: boolean;
         switch (this.#fillRule) {
           case FillRule.Positive:
-            return ae.windCount2 <= 0;
+            result = ae.windCount2 <= 0;
+            break;
           case FillRule.Negative:
-            return ae.windCount2 >= 0;
+            result = ae.windCount2 >= 0;
+            break;
           default:
-            return ae.windCount2 === 0;
+            result = ae.windCount2 === 0;
+            break;
         }
+        return ae.localMin.polytype === PathType.Subject ? result : !result;
+      }
       case ClipType.Xor:
         return true; // XOr is always contributing unless open
       default:
@@ -542,7 +548,7 @@ export class Clipper64 {
 
   #addLocalMinPoly(ae1: Active, ae2: Active, pt: Point64, isNew = false) {
     const outrec = this.#newOutRec();
-    ae2.outrec = outrec;
+    ae1.outrec = outrec;
     ae2.outrec = outrec;
 
     if (isOpen(ae1)) {
@@ -578,7 +584,6 @@ export class Clipper64 {
     }
 
     const op = new OutPt(pt, outrec);
-    this.#outPtPool.push(op);
     outrec.pts = op;
     return op;
   }
@@ -612,7 +617,7 @@ export class Clipper64 {
     } else if (e.curX !== prev.curX) {
       return;
     }
-    if (isCollinear(e.top, pt, prev.top)) {
+    if (!isCollinear(e.top, pt, prev.top)) {
       return;
     }
 
@@ -694,7 +699,6 @@ export class Clipper64 {
     }
 
     const newOp = new OutPt(pt, outrec);
-    this.#outPtPool.push(newOp);
     opBack.prev = newOp;
     newOp.prev = opFront;
     newOp.next = opBack;
@@ -885,8 +889,8 @@ export class Clipper64 {
         break;
     }
 
-    const e1WindCountIs0or1 = oldE1WindCount == 0 || oldE1WindCount == 1;
-    const e2WindCountIs0or1 = oldE2WindCount == 0 || oldE2WindCount == 1;
+    const e1WindCountIs0or1 = oldE1WindCount === 0 || oldE1WindCount === 1;
+    const e2WindCountIs0or1 = oldE2WindCount === 0 || oldE2WindCount === 1;
 
     if (
       (!isHotEdge(ae1) && !e1WindCountIs0or1) ||
@@ -945,7 +949,7 @@ export class Clipper64 {
           break;
       }
 
-      if (ae1.localMin.polytype === ae2.localMin.polytype) {
+      if (ae1.localMin.polytype !== ae2.localMin.polytype) {
         this.#addLocalMinPoly(ae1, ae2, pt);
       } else if (oldE1WindCount === 1 && oldE2WindCount === 1) {
         switch (this.#clipType) {
@@ -993,7 +997,6 @@ export class Clipper64 {
     }
     ae.outrec = outrec;
     const op = new OutPt(pt, outrec);
-    this.#outPtPool.push(op);
     outrec.pts = op;
     return op;
   }
@@ -1066,7 +1069,7 @@ export class Clipper64 {
     } else if (e.curX !== next.curX) {
       return;
     }
-    if (isCollinear(e.top, pt, next.top)) {
+    if (!isCollinear(e.top, pt, next.top)) {
       return;
     }
 
@@ -1194,15 +1197,15 @@ export class Clipper64 {
               ) {
                 break;
               }
-              // otherwise for edges at horzEdge's end, only stop when horzEdge's
-              // outslope is greater than e's slope when heading right or when
-              // horzEdge's outslope is less than e's slope when heading left.
-              else if (
-                (isLeftToRight && topX(ae, pt[1]) >= pt[0]) ||
-                (!isLeftToRight && topX(ae, pt[1]) <= pt[0])
-              ) {
-                break;
-              }
+            }
+            // otherwise for edges at horzEdge's end, only stop when horzEdge's
+            // outslope is greater than e's slope when heading right or when
+            // horzEdge's outslope is less than e's slope when heading left.
+            else if (
+              (isLeftToRight && topX(ae, pt[1]) >= pt[0]) ||
+              (!isLeftToRight && topX(ae, pt[1]) <= pt[0])
+            ) {
+              break;
             }
           }
         }
@@ -1381,7 +1384,6 @@ export class Clipper64 {
 
   #duplicateOp(op: OutPt, insertAfter: boolean) {
     const result = new OutPt(op.pt, op.outrec);
-    this.#outPtPool.push(result);
     if (insertAfter) {
       result.next = op.next!;
       result.next.prev = result;
@@ -1428,7 +1430,7 @@ export class Clipper64 {
         let lEnd: Active | undefined = right;
         const rEnd: Active | undefined = right.jump;
         left.jump = rEnd;
-        while (left != lEnd && right != rEnd) {
+        while (left !== lEnd && right !== rEnd) {
           if (right!.curX < left!.curX) {
             let tmp: Active | undefined = right!.prevInSEL;
             for (;;) {
@@ -1791,7 +1793,9 @@ export class Clipper64 {
         continue;
       }
       op2 = op2!.next;
-      if (op2 == startOp) break;
+      if (op2 === startOp) {
+        break;
+      }
     }
     this.#fixSelfIntersects(outrec);
   }
@@ -1832,11 +1836,11 @@ export class Clipper64 {
           }
           continue;
         }
+      }
 
-        op2 = op2.next!;
-        if (op2 === outrec.pts) {
-          break;
-        }
+      op2 = op2.next!;
+      if (op2 === outrec.pts) {
+        break;
       }
     }
   }
@@ -1873,7 +1877,6 @@ export class Clipper64 {
       prevOp.next = nextNextOp;
     } else {
       const newOp2 = new OutPt(ip, outrec);
-      this.#outPtPool.push(newOp2);
       newOp2.prev = prevOp;
       newOp2.next = nextNextOp;
       nextNextOp.prev = newOp2;
@@ -1898,7 +1901,6 @@ export class Clipper64 {
     splitOp.next!.outrec = newOutRec;
 
     const newOp = new OutPt(ip, newOutRec);
-    this.#outPtPool.push(newOp);
     newOp.prev = splitOp.next!;
     newOp.next = splitOp;
     newOutRec.pts = newOp;
@@ -1915,6 +1917,5 @@ export class Clipper64 {
     this.#outrecList.length = 0;
     this.#horzSegList.length = 0;
     this.#horzJoinList.length = 0;
-    this.#outPtPool.length = 0;
   }
 }

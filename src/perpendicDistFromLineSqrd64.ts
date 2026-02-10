@@ -12,7 +12,7 @@ export function perpendicDistFromLineSqrd64(
   const c = line2[0] - line1[0];
   const d = line2[1] - line1[1];
 
-  if (c === 0 || d === 0) {
+  if (c === 0 && d === 0) {
     return 0;
   }
 
