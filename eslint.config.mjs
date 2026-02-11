@@ -58,7 +58,7 @@ export default tseslint.config(
   {
     files: ["tests/**/*.test.ts"],
     rules: {
-      // node tests specifically hook into these floating promises
+      // allow us to use node's test runner idiomatically
       "@typescript-eslint/no-floating-promises": "off",
     },
   },
