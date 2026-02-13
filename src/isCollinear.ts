@@ -6,8 +6,10 @@ export function isCollinear(
   sharedPt: Point64,
   pt2: Point64,
 ): boolean {
-  // TODO are a,b,c,d within SAFE_INTEGER range here?
-  // a,b,c,d originally were longs
+  // NOTE a,b,c,d can overflow the SAFE_INTEGER range here if the first value is a very large positive number,
+  // and the second value is a large negative number.
+
+  // a,b,c,d were longs in the original implementation
   const a = BigInt(sharedPt[0]) - BigInt(pt1[0]);
   const b = BigInt(pt2[1]) - BigInt(sharedPt[1]);
   const c = BigInt(sharedPt[1]) - BigInt(pt1[1]);

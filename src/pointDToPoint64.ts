@@ -1,7 +1,7 @@
 import type { Point64, PointD } from "./types.ts";
 
 /**
- * Converts a PointD to a Point64 with the same 'round towards zero' mechanics as the original
+ * Converts a PointD to a Point64 with the same 'round towards zero' behavior as the original
  * implementation in C++ / C#.
  *
  * @argument pt The value of this must be within the SAFE_INTEGER range for JavaScript.

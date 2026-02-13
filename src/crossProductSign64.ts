@@ -5,8 +5,10 @@ export function crossProductSign64(
   pt2: Point64,
   pt3: Point64,
 ): -1 | 0 | 1 {
-  // TODO are a,b,c,d actually within the SAFE_INTEGER range?
-  // a,b,c,d are longs
+  // NOTE: we can overflow SAFE_INTEGER_RANGE on any of the calculations for a,b,c,d if we have a large positive
+  // first coordinate, and a correspondingly large negative coordinate that gets subtracted.
+
+  // a,b,c,d are longs in the original implementation
   const a = BigInt(pt2[0]) - BigInt(pt1[0]);
   const b = BigInt(pt3[1]) - BigInt(pt2[1]);
   const c = BigInt(pt2[1]) - BigInt(pt1[1]);

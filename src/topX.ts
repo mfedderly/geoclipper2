@@ -9,7 +9,8 @@ export function topX(ae: Active, currentY: number) {
     return ae.bot[0];
   }
 
-  // TODO check this math to make sure we don't overflow, its supposed to be all in longs
-  // use MidpointRounding.ToEven in order to explicitly match the nearbyint behaviour on the C++ side
+  // NOTE this return value math should be safe because we are returning an x coordinate and therefore should be restricted
+  // into the SAFE_INTEGER range. The original implementation uses longs here.
+  // use MidpointRounding.ToEven in order to explicitly match the nearbyint behaviour on the C++ implementation
   return ae.bot[0] + roundToEven(ae.dx * (currentY - ae.bot[1]));
 }
