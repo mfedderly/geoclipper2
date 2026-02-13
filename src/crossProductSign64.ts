@@ -16,7 +16,7 @@ export function crossProductSign64(
   const signCD = triSign(c) * triSign(d);
 
   if (signAB === signCD) {
-    // ab,cd are UInt128Struct
+    // ab,cd are UInt128Struct originally
     const ab = abs(a) * abs(b);
     const cd = abs(c) * abs(d);
     const result: -1 | 0 | 1 = ab > cd ? 1 : ab < cd ? -1 : 0;

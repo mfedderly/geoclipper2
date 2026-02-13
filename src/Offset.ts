@@ -155,7 +155,6 @@ export class ClipperOffset {
   }
 
   #getPerpendic(pt: Point64, norm: PointD): Point64 {
-    // TODO check precision
     return pointDToPoint64([
       pt[0] + norm[0] * this.#groupDelta,
       pt[1] + norm[1] * this.#groupDelta,
@@ -170,7 +169,6 @@ export class ClipperOffset {
   }
 
   #doBevel(path: Path64, j: number, k: number) {
-    // TODO check precision
     let pt1: Point64;
     let pt2: Point64;
 
@@ -200,7 +198,9 @@ export class ClipperOffset {
   }
 
   #doSquare(path: Path64, j: number, k: number) {
-    // TODO check PointD/Point64 precision
+    // NOTE that most of the calculation in this method is done with PointD.
+    // The final step when we are adding to this.pathOut we perform the conversion to Point64 with the pointDToPoint64 utility.
+    // This should be safe because the resulting coordinates are in the x,y coordinate space.
     let vec: PointD;
     if (j === k) {
       vec = [this.#normals[j]![1], -this.#normals[j]![0]] as PointD;
@@ -253,7 +253,8 @@ export class ClipperOffset {
   }
 
   #doMiter(path: Path64, j: number, k: number, cosA: number) {
-    // TODO check for precision
+    // For precision, we do the original math using PointD and then cast it to a Point64 for pathOut
+    // This matches the original library's use of doubles and longs
     const q = this.#groupDelta / (cosA + 1);
     this.pathOut.push(
       pointDToPoint64([
@@ -264,7 +265,8 @@ export class ClipperOffset {
   }
 
   #doRound(path: Path64, j: number, k: number, angle: number) {
-    // TODO check precision (I think this is OK because we're winding up with x,y coords)
+    // NOTE We again perform most of the math here using double and then convert back to Point64 for output
+    // #getPerpendic also uses the pointDToPoint64 utility internally
     const pt = path[j]!;
     let offsetVec = [
       this.#normals[k]![0] * this.#groupDelta,

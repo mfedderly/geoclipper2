@@ -83,7 +83,8 @@ export class Clipper64 {
   #horzSegList: HorzSegment[] = [];
   #horzJoinList: HorzJoin[] = [];
   #currentLocMin = 0;
-  #currentBotY = 0; // TODO this is a long
+  // NOTE: this is a Y coordinate. Although it starts as a long in the clipper2 source, it should remain within the SAFE_INTEGER range
+  #currentBotY = 0;
   #isSortedMinimaList = true;
   #hasOpenPaths = false;
   #succeeded = true;
@@ -203,7 +204,7 @@ export class Clipper64 {
   }
 
   #insertLocalMinimaIntoAEL(botY: number) {
-    // TODO botY is originally a long, but as its a Y coordinate should be required to be within SAFE_INTEGER range
+    // NOTE botY is originally a long, but as its a Y coordinate should be required to be within SAFE_INTEGER range
     // Add any local minima (if any) at botY ...
     // NB horizontal local minima edges should contain locMin.vertex.prev
     while (this.#hasLocMinAtY(botY)) {
@@ -602,7 +603,8 @@ export class Clipper64 {
       return;
     }
 
-    // TODO can we safely use +2 on the y coordinate here? It technically restricts our safe inputs by 2 as well
+    // NOTE: See above for a more detailed note on the +2 safety here, but it is never stored and even with
+    // the y coordinates being Number.MAX_SAFE_INTEGER this comparison will still return the expected results
     if (
       (pt[1] < e.top[1] + 2 ||
         pt[1] < prev.top[1] + 2) /* avoid trivial joins */ &&
@@ -1054,7 +1056,9 @@ export class Clipper64 {
     ) {
       return;
     }
-    // TODO can we safely add 2 to the y axis here? It would technically limit our SAFE_INTEGER range slightly
+    // NOTE: We never store the +2 coordinate here, it is only computed temporarily for calculation purposes.
+    // `Number.MAX_SAFE_INTEGER < Number.MAX_SAFE_INTEGER + 1` is `true` (and so is +2), so even if pt[1] and e.top[1] are MAX_SAFE_INTEGER,
+    // the calculation will perform as expected and can exceed the SAFE_INTEGER range without limiting our x,y coordinate space.
     if (
       (pt[1] < e.top[1] + 2 || pt[1] < next.top[1] + 2) && // avoid trivial joins
       (e.bot[1] > pt[1] || next.bot[1] > pt[1]) // (#490)

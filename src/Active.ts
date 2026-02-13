@@ -12,7 +12,7 @@ import type { Vertex } from "./Vertex.ts";
 export interface Active {
   bot: Point64;
   top: Point64;
-  // TODO careful curX needs to be a long
+  // curX is an X coordinate, so it should be within the SAFE_INTEGER range at all times
   curX: number; // current (updated at every new scanline)
   dx: number;
   windDx: 1 | -1; // 1 or -1 depending on winding direction
