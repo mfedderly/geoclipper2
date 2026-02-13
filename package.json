@@ -12,6 +12,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "node --test",
+    "lint": "pnpm run \"/^lint:.*/\"",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier -c .",
     "prepare": "husky"
