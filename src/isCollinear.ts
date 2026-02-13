@@ -1,4 +1,3 @@
-import { productsAreEqual } from "./productsAreEqual.ts";
 import type { Point64 } from "./types.ts";
 
 export function isCollinear(
@@ -17,5 +16,11 @@ export function isCollinear(
 
   // When checking for collinearity with very large coordinate values
   // then ProductsAreEqual is more accurate than using CrossProduct.
-  return productsAreEqual(a, b, c, d);
+
+  // NOTE this was originally much more complicated utilizing abs, UInt128Struct, and triSign
+  // We bypass that complexity in our implementation by using bigint for the calculation.
+  // The method is also inlined to constrain bigint propagation throughout the codebase
+  const productsAreEqual = a * b === c * d;
+
+  return productsAreEqual;
 }
