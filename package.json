@@ -5,7 +5,7 @@
   "type": "module",
   "exports": {
     ".": {
-      "module": "./dist/index.js",
+      "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
   },
@@ -17,6 +17,10 @@
     "lint:prettier": "prettier -c .",
     "prepare": "husky"
   },
+  "files": [
+    "package.json",
+    "dist"
+  ],
   "keywords": [],
   "author": "",
   "license": "BSL-1.0",
