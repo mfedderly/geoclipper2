@@ -20,7 +20,7 @@ import { getUnitNormal } from "./getUnitNormal.ts";
 import { Group } from "./Group.ts";
 import { JoinType } from "./JoinType.ts";
 import { negatePtD } from "./negatePtD.ts";
-import { point64Equal } from "./point64Equal.ts";
+import { pointEqual } from "./pointEqual.ts";
 import { pointDToPoint64 } from "./pointDToPoint64.ts";
 import { rect64ToPath } from "./rect64ToPath.ts";
 import { reflectPoint } from "./reflectPoint.ts";
@@ -148,17 +148,18 @@ export class ClipperOffset {
     c.execute(ClipType.Union, fillRule, this.#solution, []);
   }
 
-  execute(delta: number) {
-    this.#solution = [];
+  execute(delta: number, solution: Paths64) {
+    solution.length = 0;
+    this.#solution = solution;
     this.#executeInternal(delta);
   }
 
   #getPerpendic(pt: Point64, norm: PointD): Point64 {
     // TODO check precision
-    return [
+    return pointDToPoint64([
       pt[0] + norm[0] * this.#groupDelta,
       pt[1] + norm[1] * this.#groupDelta,
-    ] as Point64;
+    ] as PointD);
   }
 
   #getPerpendicD(pt: Point64, norm: PointD): PointD {
@@ -175,23 +176,23 @@ export class ClipperOffset {
 
     if (j === k) {
       const absDelta = Math.abs(this.#groupDelta);
-      pt1 = [
+      pt1 = pointDToPoint64([
         path[j]![0] - absDelta * this.#normals[j]![0],
         path[j]![1] - absDelta * this.#normals[j]![1],
-      ] as Point64;
-      pt2 = [
+      ] as PointD);
+      pt2 = pointDToPoint64([
         path[j]![0] + absDelta * this.#normals[j]![0],
         path[j]![1] + absDelta * this.#normals[j]![1],
-      ] as Point64;
+      ] as PointD);
     } else {
-      pt1 = [
+      pt1 = pointDToPoint64([
         path[j]![0] + this.#groupDelta * this.#normals[k]![0],
         path[j]![1] + this.#groupDelta * this.#normals[k]![1],
-      ] as Point64;
-      pt2 = [
+      ] as PointD);
+      pt2 = pointDToPoint64([
         path[j]![0] + this.#groupDelta * this.#normals[j]![0],
         path[j]![1] + this.#groupDelta * this.#normals[j]![1],
-      ] as Point64;
+      ] as PointD);
     }
 
     this.pathOut.push(pt1);
@@ -199,6 +200,7 @@ export class ClipperOffset {
   }
 
   #doSquare(path: Path64, j: number, k: number) {
+    // TODO check PointD/Point64 precision
     let vec: PointD;
     if (j === k) {
       vec = [this.#normals[j]![1], -this.#normals[j]![0]] as PointD;
@@ -253,10 +255,12 @@ export class ClipperOffset {
   #doMiter(path: Path64, j: number, k: number, cosA: number) {
     // TODO check for precision
     const q = this.#groupDelta / (cosA + 1);
-    this.pathOut.push([
-      path[j]![0] + (this.#normals[k]![0] + this.#normals[j]![0]) * q,
-      path[j]![1] + (this.#normals[k]![1] + this.#normals[j]![1]) * q,
-    ] as Point64);
+    this.pathOut.push(
+      pointDToPoint64([
+        path[j]![0] + (this.#normals[k]![0] + this.#normals[j]![0]) * q,
+        path[j]![1] + (this.#normals[k]![1] + this.#normals[j]![1]) * q,
+      ] as PointD),
+    );
   }
 
   #doRound(path: Path64, j: number, k: number, angle: number) {
@@ -269,7 +273,9 @@ export class ClipperOffset {
     if (j === k) {
       offsetVec = negatePtD(offsetVec);
     }
-    this.pathOut.push([pt[0] + offsetVec[0], pt[1] + offsetVec[1]] as Point64);
+    this.pathOut.push(
+      pointDToPoint64([pt[0] + offsetVec[0], pt[1] + offsetVec[1]] as PointD),
+    );
     const steps = Math.ceil(this.#stepsPerRad * Math.abs(angle));
     // ie 1 less than steps
     for (let i = 1; i < steps; i++) {
@@ -277,10 +283,9 @@ export class ClipperOffset {
         offsetVec[0] * this.#stepCos - this.#stepSin * offsetVec[1],
         offsetVec[0] * this.#stepSin + offsetVec[1] * this.#stepCos,
       ] as PointD;
-      this.pathOut.push([
-        pt[0] + offsetVec[0],
-        pt[1] + offsetVec[1],
-      ] as Point64);
+      this.pathOut.push(
+        pointDToPoint64([pt[0] + offsetVec[0], pt[1] + offsetVec[1]] as PointD),
+      );
     }
     this.pathOut.push(this.#getPerpendic(pt, this.#normals[j]!));
   }
@@ -302,7 +307,7 @@ export class ClipperOffset {
    * Caller must set k to j after calling this method
    */
   #offsetPoint(_group: Group, path: Path64, j: number, k: number): void {
-    if (point64Equal(path[j]!, path[k]!)) {
+    if (pointEqual(path[j]!, path[k]!)) {
       return;
     }
     // Let A = change in angle where edges join

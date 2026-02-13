@@ -1,7 +1,7 @@
 import { addLocMin } from "./addLocMin.ts";
 import type { LocalMinima } from "./LocalMinima.ts";
 import type { PathType } from "./PathType.ts";
-import { point64Equal } from "./point64Equal.ts";
+import { pointEqual } from "./pointEqual.ts";
 import type { Paths64 } from "./types.ts";
 import { Vertex } from "./Vertex.ts";
 import { VertexFlags } from "./VertexFlags.ts";
@@ -22,7 +22,7 @@ export function addPathsToVertexList(
         v0 = new Vertex(pt, VertexFlags.None);
         vertexList.push(v0);
         prevV = v0;
-      } else if (!point64Equal(prevV!.pt, pt)) {
+      } else if (!pointEqual(prevV!.pt, pt)) {
         // ie skips duplicates
         currV = new Vertex(pt, VertexFlags.None, prevV);
         vertexList.push(currV);
@@ -34,7 +34,7 @@ export function addPathsToVertexList(
     if (prevV?.prev == null) {
       continue;
     }
-    if (!isOpen && point64Equal(prevV.pt, v0!.pt)) {
+    if (!isOpen && pointEqual(prevV.pt, v0!.pt)) {
       prevV = prevV.prev;
     }
     prevV.next = v0!;

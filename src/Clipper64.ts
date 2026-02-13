@@ -51,7 +51,7 @@ import type { OutRec } from "./OutRec.ts";
 import { outrecIsAscending } from "./outrecIsAscending.ts";
 import { PathType } from "./PathType.ts";
 import { perpendicDistFromLineSqrd64 } from "./perpendicDistFromLineSqrd64.ts";
-import { point64Equal } from "./point64Equal.ts";
+import { pointEqual } from "./pointEqual.ts";
 import { resetHorzDirection } from "./resetHorzDirection.ts";
 import { segsIntersect } from "./segsIntersect.ts";
 import { setOwner } from "./setOwner.ts";
@@ -692,9 +692,9 @@ export class Clipper64 {
     const opFront = outrec.pts!;
     const opBack = opFront.next!;
 
-    if (toFront && point64Equal(pt, opFront.pt)) {
+    if (toFront && pointEqual(pt, opFront.pt)) {
       return opFront;
-    } else if (!toFront && point64Equal(pt, opBack.pt)) {
+    } else if (!toFront && pointEqual(pt, opBack.pt)) {
       return opBack;
     }
 
@@ -812,7 +812,7 @@ export class Clipper64 {
 
       // horizontal edges can pass under open paths at a LocMins
       else if (
-        point64Equal(pt, ae1.localMin.vertex.pt) &&
+        pointEqual(pt, ae1.localMin.vertex.pt) &&
         !isOpenEndVertex(ae1.localMin.vertex)
       ) {
         // find the other side of the LocMin and
@@ -1743,7 +1743,7 @@ export class Clipper64 {
     path.push(lastPt);
 
     while (op2 !== op) {
-      if (!point64Equal(op2.pt, lastPt)) {
+      if (!pointEqual(op2.pt, lastPt)) {
         lastPt = op2.pt;
         path.push(lastPt);
       }
@@ -1776,8 +1776,8 @@ export class Clipper64 {
       // NB if preserveCollinear == true, then only remove 180 deg. spikes
       if (
         isCollinear(op2!.prev.pt, op2!.pt, op2!.next!.pt) &&
-        (point64Equal(op2!.pt, op2!.prev.pt) ||
-          point64Equal(op2!.pt, op2!.next!.pt) ||
+        (pointEqual(op2!.pt, op2!.prev.pt) ||
+          pointEqual(op2!.pt, op2!.next!.pt) ||
           !this.preserveCollinear ||
           dotProduct64(op2!.prev.pt, op2!.pt, op2!.next!.pt) < 0)
       ) {
@@ -1872,7 +1872,7 @@ export class Clipper64 {
 
     // de-link splitOp and splitOp.next from the path
     // while inserting the intersection point
-    if (point64Equal(ip, prevOp.pt) || point64Equal(ip, nextNextOp.pt)) {
+    if (pointEqual(ip, prevOp.pt) || pointEqual(ip, nextNextOp.pt)) {
       nextNextOp.prev = prevOp;
       prevOp.next = nextNextOp;
     } else {

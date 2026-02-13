@@ -7,7 +7,7 @@ export function getLowestPathInfo(paths: Paths64): {
 } {
   let idx = -1;
   let isNegArea = false;
-  const botPt = [Number.MAX_VALUE, Number.MAX_VALUE] as Point64;
+  const botPt = [Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER] as Point64;
 
   for (let i = 0; i < paths.length; i++) {
     let a = Number.MAX_VALUE;
