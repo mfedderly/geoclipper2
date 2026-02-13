@@ -155,10 +155,7 @@ export class ClipperOffset {
   }
 
   #getPerpendic(pt: Point64, norm: PointD): Point64 {
-    return pointDToPoint64([
-      pt[0] + norm[0] * this.#groupDelta,
-      pt[1] + norm[1] * this.#groupDelta,
-    ] as PointD);
+    return pointDToPoint64(this.#getPerpendicD(pt, norm));
   }
 
   #getPerpendicD(pt: Point64, norm: PointD): PointD {
