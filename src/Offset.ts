@@ -26,6 +26,7 @@ import { rect64ToPath } from "./rect64ToPath.ts";
 import { reflectPoint } from "./reflectPoint.ts";
 import { translatePoint } from "./translatePoint.ts";
 import type { Path64, Paths64, Point64, PointD } from "./types.ts";
+import { PathType } from "./PathType.ts";
 
 const TOLERANCE = 1.0e-12;
 
@@ -144,7 +145,7 @@ export class ClipperOffset {
     const c = new Clipper64();
     c.preserveCollinear = this.preserveCollinear;
     c.reverseSolution = this.reverseSolution !== pathsReversed;
-    c.addSubject(this.#solution);
+    c.addPaths(this.#solution, PathType.Subject, false);
     c.execute(ClipType.Union, fillRule, this.#solution, []);
   }
 
