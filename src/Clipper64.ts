@@ -91,10 +91,6 @@ export class Clipper64 {
   preserveCollinear = true;
   reverseSolution = false;
 
-  addSubject(paths: Paths64) {
-    this.addPaths(paths, PathType.Subject);
-  }
-
   addPaths(paths: Paths64, polytype: PathType, isOpen = false) {
     if (isOpen) {
       this.#hasOpenPaths = true;
