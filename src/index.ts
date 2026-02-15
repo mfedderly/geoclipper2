@@ -9,3 +9,4 @@ export { area } from "./area.ts";
 export { inflatePaths } from "./inflatePaths.ts";
 export { pointInPolygon } from "./pointInPolygon.ts";
 export { createAzimuthalEquidistantProjection } from "./createAzimuthalEquidistantProjection.ts";
+export { groupPolygonPaths } from "./groupPolygonPaths.ts";
