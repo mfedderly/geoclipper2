@@ -40,8 +40,20 @@ test("groupPolygonPaths", () => {
       [200, 100],
       [100, 100],
     ],
+    // unrelated outer ring that doesn't share any points
+    [
+      [400, 400],
+      [401, 400],
+      [401, 401],
+      [400, 401],
+    ],
   ] as Paths64;
-  const expected = [[paths[0], paths[1]], [paths[2], paths[3]], [paths[4]]];
+  const expected = [
+    [paths[0], paths[1]],
+    [paths[2], paths[3]],
+    [paths[4]],
+    [paths[5]],
+  ];
   const grouped = groupPolygonPaths(paths);
   assert.deepEqual(grouped, expected);
 });
