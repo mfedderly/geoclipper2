@@ -91,6 +91,17 @@ describe("projection - azimuthal equidistant", () => {
       "180.1 should round trip outside of [-180, 180)",
     );
   });
+
+  test("handle project past the north pole", () => {
+    const { project, unproject } = createAzimuthalEquidistantProjection([
+      0, 89,
+    ]);
+    const pastNPole = project([0, 90.1])!;
+    const unprojected = unproject(pastNPole);
+
+    assert.strictEqual(unprojected[0], -180);
+    assertClose(unprojected[1], 89.9, "should round-trip 90.1 to 89.9");
+  });
 });
 
 function assertClose(actual: number, expected: number, msg: string) {
