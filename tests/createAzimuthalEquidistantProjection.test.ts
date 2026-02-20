@@ -53,6 +53,44 @@ describe("projection - azimuthal equidistant", () => {
       assertClose(inverted[1], input[1], `projected y of ${input.join()}`);
     }
   });
+
+  test("handle project past the antimeridian from the west", () => {
+    const { project, unproject } = createAzimuthalEquidistantProjection([
+      -177.5, 0,
+    ]);
+    const pastNegAntimeridian = project([-180.1, 0])!;
+    const unprojected = unproject(pastNegAntimeridian);
+
+    assert.strictEqual(
+      pastNegAntimeridian[0],
+      Math.trunc(((-180.1 - -177.5) * Math.PI * EARTH_RADIUS_CM) / 180),
+      "should project to the expected integer coordinate",
+    );
+    assertClose(
+      unprojected[0],
+      -180.1,
+      "-180.1 should round trip outside of [-180, 180)",
+    );
+  });
+
+  test("handle project past the antimeridian from the east", () => {
+    const { project, unproject } = createAzimuthalEquidistantProjection([
+      177.5, 0,
+    ]);
+    const pastPosAntimeridian = project([180.1, 0])!;
+    const unprojected = unproject(pastPosAntimeridian);
+
+    assert.strictEqual(
+      pastPosAntimeridian[0],
+      Math.trunc(((180.1 - 177.5) * Math.PI * EARTH_RADIUS_CM) / 180),
+      "should project to the expected integer coordinate",
+    );
+    assertClose(
+      unprojected[0],
+      180.1,
+      "180.1 should round trip outside of [-180, 180)",
+    );
+  });
 });
 
 function assertClose(actual: number, expected: number, msg: string) {

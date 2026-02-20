@@ -6,7 +6,16 @@ const DEG_TO_RAD = Math.PI / 180;
 const RAD_TO_DEG = 180 / Math.PI;
 export const EARTH_RADIUS_CM = 637100880; // This is chosen to give us as much precision as possible while still using Point64 within the SAFE_INTEGER range
 
-// See: https://mathworld.wolfram.com/AzimuthalEquidistantProjection.html
+/**
+ * Creates an azimuthal equidistant projection.
+ *
+ * For best results, the distance of any given point from the center should be less than 10,000 km.
+ *
+ * When unprojecting coordinates, this may return longitudes outside [-180, 180].
+ *
+ * @see https://mathworld.wolfram.com/AzimuthalEquidistantProjection.html
+ * @see https://en.wikipedia.org/wiki/Azimuthal_equidistant_projection
+ */
 export function createAzimuthalEquidistantProjection(
   center: [number, number],
 ): Projection {
