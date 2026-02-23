@@ -1704,14 +1704,16 @@ export class Clipper64 {
 
       const path: Path64 = [];
       if (outrec.isOpen) {
-        if (this.#buildPath(outrec.pts, this.reverseSolution, true, path))
+        if (this.#buildPath(outrec.pts, this.reverseSolution, true, path)) {
           solutionOpen.push(path);
+        }
       } else {
         this.#cleanCollinear(outrec);
         // closed paths should always return a Positive orientation
         // except when ReverseSolution == true
-        if (this.#buildPath(outrec.pts, this.reverseSolution, false, path))
+        if (this.#buildPath(outrec.pts, this.reverseSolution, false, path)) {
           solutionClosed.push(path);
+        }
       }
     }
 
