@@ -108,7 +108,7 @@ export class Clipper64 {
    * @param polytype Whether the paths are a Subject or a Clip
    * @param isOpen whether or not the paths should be treated as closed (polygons)
    */
-  addPaths(paths: Paths64, polytype: PathType, isOpen = false) {
+  addPaths(paths: Paths64, polytype: PathType, isOpen = false): void {
     if (isOpen) {
       this.#hasOpenPaths = true;
     }
@@ -136,7 +136,7 @@ export class Clipper64 {
     fillRule: FillRule,
     solutionClosed: Paths64,
     solutionOpen: Paths64,
-  ) {
+  ): boolean {
     solutionClosed.length = 0;
     solutionOpen.length = 0;
     try {

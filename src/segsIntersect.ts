@@ -6,7 +6,7 @@ export function segsIntersect(
   seg2a: Point64,
   seg2b: Point64,
   inclusive = false,
-) {
+): boolean {
   // NOTE the original has math in doubles, so this is safe to do without worrying about an overflow
   const dy1 = seg1b[1] - seg1a[1];
   const dx1 = seg1b[0] - seg1a[0];

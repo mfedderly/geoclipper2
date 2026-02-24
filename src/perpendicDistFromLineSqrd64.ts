@@ -5,7 +5,7 @@ export function perpendicDistFromLineSqrd64(
   pt: Point64,
   line1: Point64,
   line2: Point64,
-) {
+): number {
   // NOTE this entire method originally operates on doubles, and is therefore safe against SAFE_INTEGER overflows
   const a = pt[0] - line1[0];
   const b = pt[1] - line1[1];

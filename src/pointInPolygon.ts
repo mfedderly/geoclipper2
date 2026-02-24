@@ -9,7 +9,10 @@ import type { Path64, Point64 } from "./types.ts";
  * @param polygon The polygon to check against
  * @returns PointInPolygonResult indicating where the point is
  */
-export function pointInPolygon(pt: Point64, polygon: Path64) {
+export function pointInPolygon(
+  pt: Point64,
+  polygon: Path64,
+): PointInPolygonResult {
   const len = polygon.length;
   let start = 0;
 

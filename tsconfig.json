@@ -38,6 +38,7 @@
     "skipLibCheck": false,
 
     "erasableSyntaxOnly": true,
-    "rewriteRelativeImportExtensions": true
+    "rewriteRelativeImportExtensions": true,
+    "isolatedDeclarations": true
   }
 }

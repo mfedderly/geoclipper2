@@ -1,6 +1,6 @@
 import type { Active } from "./Active.ts";
 
-export function swapOutrecs(ae1: Active, ae2: Active) {
+export function swapOutrecs(ae1: Active, ae2: Active): void {
   const or1 = ae1.outrec; // at least one edge has
   const or2 = ae2.outrec; // an assigned outrec
   if (or1 === or2) {

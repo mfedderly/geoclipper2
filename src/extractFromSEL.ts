@@ -1,6 +1,6 @@
 import type { Active } from "./Active.ts";
 
-export function extractFromSEL(ae: Active) {
+export function extractFromSEL(ae: Active): Active | undefined {
   const res = ae.nextInSEL;
   if (res != null) {
     res.prevInSEL = ae.prevInSEL;

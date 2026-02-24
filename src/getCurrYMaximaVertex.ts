@@ -1,7 +1,8 @@
 import type { Active } from "./Active.ts";
 import { isMaxima } from "./isMaxima.ts";
+import type { Vertex } from "./Vertex.ts";
 
-export function getCurrYMaximaVertex(ae: Active) {
+export function getCurrYMaximaVertex(ae: Active): Vertex | undefined {
   let result = ae.vertexTop;
   if (ae.windDx > 0) {
     while (result!.next!.pt[1] === result!.pt[1]) {

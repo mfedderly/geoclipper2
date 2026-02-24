@@ -1,7 +1,7 @@
 import type { Active } from "./Active.ts";
 import { roundToEven } from "./roundToEven.ts";
 
-export function topX(ae: Active, currentY: number) {
+export function topX(ae: Active, currentY: number): number {
   if (currentY === ae.top[1] || ae.top[0] === ae.bot[0]) {
     return ae.top[0];
   }

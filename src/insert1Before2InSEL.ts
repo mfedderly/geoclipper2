@@ -1,6 +1,6 @@
 import type { Active } from "./Active.ts";
 
-export function insert1Before2InSEL(ae1: Active, ae2: Active) {
+export function insert1Before2InSEL(ae1: Active, ae2: Active): void {
   ae1.prevInSEL = ae2.prevInSEL;
   if (ae1.prevInSEL != null) {
     ae1.prevInSEL.nextInSEL = ae1;

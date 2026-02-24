@@ -1,6 +1,6 @@
 import type { OutPt } from "./OutPt.ts";
 
-export function areaOutPt(op: OutPt) {
+export function areaOutPt(op: OutPt): number {
   // NOTE: the original function did all of this math in a double, and is therefore safe against overflow
   // https://en.wikipedia.org/wiki/Shoelace_formula
   let area = 0.0;

@@ -1,6 +1,6 @@
 import type { Active } from "./Active.ts";
 
-export function uncoupleOutRec(ae: Active) {
+export function uncoupleOutRec(ae: Active): void {
   const outrec = ae.outrec;
   if (outrec == null) {
     return;

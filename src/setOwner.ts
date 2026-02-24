@@ -1,6 +1,6 @@
 import type { OutRec } from "./OutRec.ts";
 
-export function setOwner(outrec: OutRec, newOwner: OutRec) {
+export function setOwner(outrec: OutRec, newOwner: OutRec): void {
   //precondition1: new_owner is never null
   while (newOwner.owner != null && newOwner.owner.pts == null) {
     newOwner.owner = newOwner.owner.owner;

@@ -1,6 +1,6 @@
 import type { OutRec } from "./OutRec.ts";
 
-export function swapFrontBackSides(outrec: OutRec) {
+export function swapFrontBackSides(outrec: OutRec): void {
   // while this proc. is needed for open paths
   // it's almost never needed for closed paths
   const ae2 = outrec.frontEdge!;
