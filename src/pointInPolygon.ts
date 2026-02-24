@@ -2,6 +2,13 @@ import { crossProductSign64 } from "./crossProductSign64.ts";
 import { PointInPolygonResult } from "./PointInPolygonResult.ts";
 import type { Path64, Point64 } from "./types.ts";
 
+/**
+ * Determine a point's position in relation to a polygon. It can be Outside, Inside, or On the polygon.
+ *
+ * @param pt The point to check
+ * @param polygon The polygon to check against
+ * @returns PointInPolygonResult indicating where the point is
+ */
 export function pointInPolygon(pt: Point64, polygon: Path64) {
   const len = polygon.length;
   let start = 0;

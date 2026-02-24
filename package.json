@@ -1,7 +1,9 @@
 {
   "name": "geoclipper2",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
+  "bugs": "https://github.com/mfedderly/geoclipper2/issues",
+  "repository": "github:mfedderly/geoclipper2",
   "type": "module",
   "exports": {
     ".": {

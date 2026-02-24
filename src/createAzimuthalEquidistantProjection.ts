@@ -7,11 +7,27 @@ const RAD_TO_DEG = 180 / Math.PI;
 export const EARTH_RADIUS_CM = 637100880; // This is chosen to give us as much precision as possible while still using Point64 within the SAFE_INTEGER range
 
 /**
- * Creates an azimuthal equidistant projection.
+ * Creates an azimuthal equidistant projection intended for use with GeoJSON data and Clipper2.
  *
  * For best results, the distance of any given point from the center should be less than 10,000 km.
  *
- * When unprojecting coordinates, this may return longitudes outside [-180, 180].
+ * When projecting coordinates, this returns a Point64 represented as an x,y offset from the center in centimeters. This scaling
+ * was specifically chosen as a balance between JavaScript's MAX_SAFE_INTEGER of ~2^53 and accuracy for GPS data. GeoJSON data
+ * with 6 decimal places represents roughly a 10cm area (RFC 7946 section 11.2). By using centimeters we get ourselves below that
+ * threshold, and keep ourselves from overflowing JavaScript's integer capabilities.
+ *
+ * When unprojecting coordinates, this may return longitudes outside [-180, 180]. In order to normalize longitudes you may want
+ * to perform one of the following, depending on how you are using the data. For certain map renderers, these out-of-bounds geometries
+ * will just be rendered correctly without normalizing.
+ * - Split the polygon at the antimeridian (RFC 7946 section 3.1.9)
+ * - Set the longitude value within the range using the mod operator `(((longitude % 360) + 540) % 360) - 180`
+ * - Set the longitude value within the range using +/- 360 in a while loop (it will likely only enter the while loop 0 or 1 times)
+ *
+ * @argument center A point to use as the center of a projection. In order to minimize distortion, this is typically chosen
+ *   to be the center of the geometries that are being projected. It can also be useful to 'snap' to the north or south pole
+ *   if your data is close to there.
+ *
+ * @returns a pair of project and unproject methods implementing the Projection interface
  *
  * @see https://mathworld.wolfram.com/AzimuthalEquidistantProjection.html
  * @see https://en.wikipedia.org/wiki/Azimuthal_equidistant_projection

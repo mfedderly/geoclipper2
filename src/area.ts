@@ -1,5 +1,11 @@
 import type { Path64 } from "./types.ts";
 
+/**
+ * Calculate the area of a given path. Typically a positive result
+ * indicates an exterior ring, and a negative result indicates an interior (hole) ring.
+ *
+ * The math here is expected to be performed in a double-precision float (JavaScript's native Number type)
+ */
 export function area(path: Path64): number {
   // https://en.wikipedia.org/wiki/Shoelace_formula
   let a = 0; // this is expected to be a double
