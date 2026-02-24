@@ -2,7 +2,7 @@ import { getRealOutRec } from "./getRealOutRec.ts";
 import type { HorzSegment } from "./HorzSegment.ts";
 import { setHorzSegHeadingForward } from "./setHorzSegHeadingForward.ts";
 
-export function updateHorzSegment(hs: HorzSegment) {
+export function updateHorzSegment(hs: HorzSegment): boolean {
   const op = hs.leftOp!;
   const outrec = getRealOutRec(op.outrec)!;
   const outrecHasEdges = outrec.frontEdge != null;

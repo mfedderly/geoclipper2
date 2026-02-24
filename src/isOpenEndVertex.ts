@@ -1,7 +1,7 @@
 import type { Vertex } from "./Vertex.ts";
 import { VertexFlags } from "./VertexFlags.ts";
 
-export function isOpenEndVertex(v: Vertex) {
+export function isOpenEndVertex(v: Vertex): boolean {
   return (
     (v.flags & (VertexFlags.OpenStart | VertexFlags.OpenEnd)) !==
     VertexFlags.None

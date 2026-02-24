@@ -2,7 +2,7 @@ import type { Active } from "./Active.ts";
 import { isHorizontal } from "./isHorizontal.ts";
 import { pointEqual } from "./pointEqual.ts";
 
-export function findEdgeWithMatchingLocMin(e: Active) {
+export function findEdgeWithMatchingLocMin(e: Active): Active | undefined {
   let result = e.nextInAEL;
   while (result != null) {
     if (result.localMin === e.localMin) {

@@ -1,6 +1,6 @@
 import type { Active } from "./Active.ts";
 
-export function getMaximaPair(ae: Active) {
+export function getMaximaPair(ae: Active): Active | undefined {
   let ae2 = ae.nextInAEL;
   while (ae2 != null) {
     if (ae2.vertexTop === ae.vertexTop) {

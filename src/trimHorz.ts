@@ -3,7 +3,7 @@ import { getDx } from "./getDx.ts";
 import { isMaxima } from "./isMaxima.ts";
 import { nextVertex } from "./nextVertex.ts";
 
-export function trimHorz(horzEdge: Active, preserveCollinear: boolean) {
+export function trimHorz(horzEdge: Active, preserveCollinear: boolean): void {
   let wasTrimmed = false;
   let pt = nextVertex(horzEdge).pt;
 

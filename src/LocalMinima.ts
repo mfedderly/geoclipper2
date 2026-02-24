@@ -12,7 +12,7 @@ export class LocalMinima {
     this.isOpen = isOpen;
   }
 
-  isEqual(other: LocalMinima) {
+  isEqual(other: LocalMinima): boolean {
     return this.vertex === other.vertex; // reference equality
   }
 }

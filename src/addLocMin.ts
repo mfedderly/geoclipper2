@@ -8,7 +8,7 @@ export function addLocMin(
   polytype: PathType,
   isOpen: boolean,
   minimaList: LocalMinima[],
-) {
+): void {
   // make sure the vertex is added only once ...
   if ((vert.flags & VertexFlags.LocalMin) != VertexFlags.None) {
     return;

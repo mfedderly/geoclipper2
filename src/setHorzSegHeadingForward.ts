@@ -5,7 +5,7 @@ export function setHorzSegHeadingForward(
   hs: HorzSegment,
   opP: OutPt,
   opN: OutPt,
-) {
+): boolean {
   if (opP.pt[0] === opN.pt[0]) {
     return false;
   }

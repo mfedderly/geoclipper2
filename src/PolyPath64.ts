@@ -10,7 +10,7 @@ export class PolyPath64 {
     this.parent = parent;
   }
 
-  isHole() {
+  isHole(): boolean {
     const lvl = this.getLevel();
     return lvl !== 0 && (lvl & 1) === 0;
   }
@@ -25,7 +25,7 @@ export class PolyPath64 {
     return result;
   }
 
-  clear() {
+  clear(): void {
     this.childs.length = 0;
   }
 

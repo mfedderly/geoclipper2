@@ -1,6 +1,6 @@
 import type { OutRec } from "./OutRec.ts";
 
-export function fixOutRecPts(outrec: OutRec) {
+export function fixOutRecPts(outrec: OutRec): void {
   let op = outrec.pts!;
   do {
     op.outrec = outrec;

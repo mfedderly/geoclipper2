@@ -12,7 +12,7 @@ export function addPathsToVertexList(
   isOpen: boolean,
   minimaList: LocalMinima[],
   vertexList: Vertex[],
-) {
+): void {
   for (const path of paths) {
     let v0: Vertex | undefined;
     let prevV: Vertex | undefined;

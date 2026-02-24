@@ -1,7 +1,7 @@
 import type { OutPt } from "./OutPt.ts";
 import { ptsReallyClose } from "./ptsReallyClose.ts";
 
-export function isVerySmallTriangle(op: OutPt) {
+export function isVerySmallTriangle(op: OutPt): boolean {
   return (
     op.next!.next === op.prev &&
     (ptsReallyClose(op.prev.pt, op.next!.pt) ||

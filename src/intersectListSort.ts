@@ -1,6 +1,6 @@
 import type { IntersectNode } from "./IntersectNode.ts";
 
-export function intersectListSort(a: IntersectNode, b: IntersectNode) {
+export function intersectListSort(a: IntersectNode, b: IntersectNode): number {
   // mirror the sorting from the C# library first
   if (a.pt[1] !== b.pt[1]) {
     return b.pt[1] - a.pt[1]; // y descending

@@ -74,7 +74,7 @@ export class ClipperOffset {
     this.reverseSolution = reverseSolution;
   }
 
-  clear() {
+  clear(): void {
     this.#groupList = [];
   }
 
@@ -149,7 +149,7 @@ export class ClipperOffset {
     c.execute(ClipType.Union, fillRule, this.#solution, []);
   }
 
-  execute(delta: number, solution: Paths64) {
+  execute(delta: number, solution: Paths64): void {
     solution.length = 0;
     this.#solution = solution;
     this.#executeInternal(delta);

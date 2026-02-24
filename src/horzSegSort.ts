@@ -3,7 +3,7 @@ import type { HorzSegment } from "./HorzSegment.ts";
 export function horzSegSort(
   hs1: HorzSegment | undefined,
   hs2: HorzSegment | undefined,
-) {
+): number {
   if (hs1 == null || hs2 == null) {
     return 0;
   }
