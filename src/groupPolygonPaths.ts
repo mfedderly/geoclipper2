@@ -12,8 +12,10 @@ interface Polygon {
 type BBox = [number, number, number, number];
 
 /**
- * Given any number of paths, separate them into distinct Paths64 groupings that
- * contain one outer ring and any number of inner (hole) rings.
+ * Group a Paths64 result (from inflatePaths) into its individual polygons. The returned Paths64's will have
+ * an exterior ring followed by any number of interior (hole) rings (like GeoJSON).
+ *
+ * If there is an exterior ring contained within a hole of a larger polygon, the 'island' will have its own entry in the result.
  */
 export function groupPolygonPaths(paths: Paths64): Paths64[] {
   const root: Polygon = {

@@ -66,6 +66,17 @@ import { updateHorzSegment } from "./updateHorzSegment.ts";
 import type { Vertex } from "./Vertex.ts";
 import { VertexFlags } from "./VertexFlags.ts";
 
+/**
+ * A Clipper64 implementation that uses JavaScript numbers internally. This can be used to perform various clipping
+ * operations: Intersection, Union, Difference, Xor.
+ *
+ * The x and y coordinates on any given point *must* remain within [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER].
+ * Normally this would not be a problem if using the included projection.
+ *
+ * The implementation internally uses BigInt where necessary (crossProductSign64 and isCollinear).
+ *
+ * @see https://www.angusj.com/clipper2/Docs/Units/Clipper.Engine/Classes/Clipper64/_Body.htm
+ */
 export class Clipper64 {
   #clipType: ClipType = ClipType.NoClip;
   #fillRule: FillRule = FillRule.EvenOdd;
@@ -91,6 +102,12 @@ export class Clipper64 {
   preserveCollinear = true;
   reverseSolution = false;
 
+  /**
+   * Adds subject or clip paths
+   * @param paths
+   * @param polytype Whether the paths are a Subject or a Clip
+   * @param isOpen whether or not the paths should be treated as closed (polygons)
+   */
   addPaths(paths: Paths64, polytype: PathType, isOpen = false) {
     if (isOpen) {
       this.#hasOpenPaths = true;
@@ -105,6 +122,15 @@ export class Clipper64 {
     );
   }
 
+  /**
+   * Execute a given clip operation on data that has already been loaded with addPaths
+   *
+   * @param clipType The clip operation
+   * @param fillRule https://www.angusj.com/clipper2/Docs/Units/Clipper/Types/FillRule.htm
+   * @param solutionClosed The closed paths from the result. Will be mutated.
+   * @param solutionOpen The open paths from the result. Will be mutated.
+   * @returns Whether the operation succeeded
+   */
   execute(
     clipType: ClipType,
     fillRule: FillRule,

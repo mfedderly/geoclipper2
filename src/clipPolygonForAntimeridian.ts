@@ -1,5 +1,11 @@
-// Sutherland–Hodgman but written to only clip for -1, 0, or +1 copies of the world
-export function clipForAntimeridian(polygons: [number, number][][][]) {
+/**
+ * Given a series of unprojected polygons, clip the geometries at the antimeridian.
+ *
+ * This will only handle coordinates with longitude from [-540, +540], or one "copy" past the normal range.
+ */
+export function clipPolygonForAntimeridian(
+  polygons: [number, number][][][],
+): [number, number][][][] {
   const out: [number, number][][][] = [];
 
   for (const poly of polygons) {
@@ -9,6 +15,7 @@ export function clipForAntimeridian(polygons: [number, number][][][]) {
       const center: [number, number][][] = [];
 
       for (const ring of poly) {
+        // Sutherland–Hodgman but written to only clip for -1, 0, or +1 copies of the world
         const leftRing = clipByLng(ring, -540, -180);
         const rightRing = clipByLng(ring, 180, 540);
         const centerRing = clipByLng(ring, -180, 180);

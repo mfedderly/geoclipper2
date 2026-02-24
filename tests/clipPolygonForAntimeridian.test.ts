@@ -4,8 +4,8 @@ import { inflatePaths } from "../src/inflatePaths.ts";
 import { JoinType } from "../src/JoinType.ts";
 import { EndType } from "../src/EndType.ts";
 import { groupPolygonPaths } from "../src/groupPolygonPaths.ts";
-import { clipForAntimeridian } from "../src/clipForAntimeridian.ts";
 import assert from "node:assert";
+import { clipPolygonForAntimeridian } from "../src/clipPolygonForAntimeridian.ts";
 
 // this is roughly a square overlapping the antimeridian at -180
 // neither of these rings has the final position that matches the first position, and are not valid geojson
@@ -24,7 +24,7 @@ const inner: [number, number][] = [
   [-180.5, 0.5],
 ];
 
-test("clipForAntimeridian @ -180", () => {
+test("clipPolygonForAntimeridian @ -180", () => {
   const input: [number, number][][] = [outer, inner];
 
   const center: [number, number] = [-180, 0];
@@ -38,7 +38,7 @@ test("clipForAntimeridian @ -180", () => {
     poly.map((ring) => ring.map((pt) => unproject(pt))),
   );
 
-  const out = clipForAntimeridian(unproj);
+  const out = clipPolygonForAntimeridian(unproj);
 
   assert.strictEqual(out.length, 2, "should have two output polygons");
   assert.strictEqual(
@@ -53,7 +53,7 @@ test("clipForAntimeridian @ -180", () => {
   );
 });
 
-test("clipForAntimeridian @ 0", () => {
+test("clipPolygonForAntimeridian @ 0", () => {
   // shifted by 180 degrees towards [0, 0]
   const input: [number, number][][] = [
     outer.map((pt) => [pt[0] + 180, pt[1]]),
@@ -71,7 +71,7 @@ test("clipForAntimeridian @ 0", () => {
     poly.map((ring) => ring.map((pt) => unproject(pt))),
   );
 
-  const out = clipForAntimeridian(unproj);
+  const out = clipPolygonForAntimeridian(unproj);
 
   assert.strictEqual(out.length, 1, "should have 1 output polygon");
   assert.strictEqual(
@@ -81,7 +81,7 @@ test("clipForAntimeridian @ 0", () => {
   );
 });
 
-test("clipForAntimeridian @ 180", () => {
+test("clipPolygonForAntimeridian @ 180", () => {
   // shifted by 360 degrees over to the positive side of the antimeridian
   const input: [number, number][][] = [
     outer.map((pt) => [pt[0] + 360, pt[1]]),
@@ -99,7 +99,7 @@ test("clipForAntimeridian @ 180", () => {
     poly.map((ring) => ring.map((pt) => unproject(pt))),
   );
 
-  const out = clipForAntimeridian(unproj);
+  const out = clipPolygonForAntimeridian(unproj);
 
   assert.strictEqual(out.length, 2, "should have two output polygons");
   assert.strictEqual(
