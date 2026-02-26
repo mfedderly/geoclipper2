@@ -25,4 +25,4 @@ jobs:
       - run: pnpm run build
       - run: pnpm run test
       - run: pnpm run lint
-      - run: NPM_CONFIG_PROVENANCE=true pnpm publish --access public
+      - run: NPM_CONFIG_PROVENANCE=true pnpm publish --access public --no-git-checks
