@@ -1,4 +1,4 @@
-# geo-clipper2
+# geo-clipper2 &middot; [![License](https://img.shields.io/npm/l/geoclipper2.svg)](https://github.com/mfedderly/geoclipper2/blob/main/LICENSE) [![npm version](https://img.shields.io/npm/v/geoclipper2.svg)](https://www.npmjs.com/package/geoclipper2) [![Build Status](https://github.com/mfedderly/geoclipper2/actions/workflows/ci.yml/badge.svg)](https://github.com/mfedderly/geoclipper2/actions/workflows/ci.yml)
 
 This is a set of polygon clipping and offsetting operations, originally based off of (clipper2)[https://github.com/AngusJohnson/Clipper2].
 The port of Clipper2 is limited to Clipper64 and inflatePaths, with a focus on the int64 implementations.
