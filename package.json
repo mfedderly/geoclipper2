@@ -31,15 +31,15 @@
   "packageManager": "pnpm@10.28.0",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@types/node": "^25.3.5",
-    "@typescript-eslint/utils": "^8.56.1",
-    "eslint": "^10.0.3",
+    "@types/node": "^25.5.2",
+    "@typescript-eslint/utils": "^8.58.0",
+    "eslint": "^10.1.0",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
-    "lint-staged": "^16.3.2",
+    "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1"
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.0"
   },
   "lint-staged": {
     "*.{ts,js,mjs}": [
