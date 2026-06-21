@@ -1837,33 +1837,19 @@ export class Clipper64 {
       if (
         segsIntersect(op2.prev.pt, op2.pt, op2.next!.pt, op2.next!.next!.pt)
       ) {
-        if (
-          segsIntersect(
-            op2.prev.pt,
-            op2.pt,
-            op2.next!.next!.pt,
-            op2.next!.next!.next!.pt,
-          )
-        ) {
-          // adjacent intersections (ie a micro self-intersection)
-          op2 = this.#duplicateOp(op2, false);
-          op2.pt = op2.next!.next!.next!.pt;
-          op2 = op2.next!;
-        } else {
-          if (op2 === outrec.pts || op2.next === outrec.pts) {
-            outrec.pts = outrec.pts!.prev;
-          }
-          this.#doSplitOp(outrec, op2);
-          if (outrec.pts == null) {
-            return;
-          }
-          op2 = outrec.pts;
-          // triangles can't self-intersect
-          if (op2.prev === op2.next!.next) {
-            break;
-          }
-          continue;
+        if (op2 === outrec.pts || op2.next == outrec.pts) {
+          outrec.pts = outrec.pts!.prev;
         }
+        this.#doSplitOp(outrec, op2);
+        if (outrec.pts == null) {
+          return;
+        }
+        op2 = outrec.pts;
+        // triangles can't self-intersect
+        if (op2.prev === op2.next!.next) {
+          break;
+        }
+        continue;
       }
 
       op2 = op2.next!;
